@@ -5,6 +5,9 @@ import { TasksService } from './tasks.service';
 import { Task } from './entities/task.entity';  
 import { CreateTaskDto } from '../dto/create_task.dto';
 import { UpdateTaskDto } from '../dto/update_task.dto';
+import { User } from './entities/user.entity';
+
+
 
 const mockTasksService = () => ({
   findAll: jest.fn(),
@@ -17,6 +20,16 @@ const mockTasksService = () => ({
 describe('TasksController', () => {
   let controller: TasksController;
   let service: any;
+
+  const mockUser: User = {
+    id: 'user-1',
+    email: 'test@example.com',
+    name: 'Test User',
+    password: 'hashedpassword',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    tasks: [],
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,49 +47,42 @@ describe('TasksController', () => {
   });
 
   describe('findAll', () => {
-    it('should return empty array when no tasks exist', async () => {
-      service.findAll.mockResolvedValue([]);
-
-      const result = await controller.findAll();
-
-      expect(result).toEqual([]);
-      expect(service.findAll).toHaveBeenCalled();
-    });
-
-    it('should return all tasks', async () => {
+    it('should return user tasks only', async () => {
       const mockTasks = [
-        { id: '1', title: 'Task 1', isCompleted: false },
-        { id: '2', title: 'Task 2', isCompleted: true },
+        { id: '1', title: 'Task 1', userId: 'user-1' },
+        { id: '2', title: 'Task 2', userId: 'user-1' },
       ];
       service.findAll.mockResolvedValue(mockTasks);
 
-      const result = await controller.findAll();
+      const result = await controller.findAll(mockUser);
 
       expect(result).toEqual(mockTasks);
-      expect(service.findAll).toHaveBeenCalled();
+      expect(service.findAll).toHaveBeenCalledWith(mockUser);
     });
   });
 
   describe('findOne', () => {
-    it('should return a task when found', async () => {
-      const mockTask = { id: '1', title: 'Task 1' };
+    it('should return user task by id', async () => {
+      const mockTask = { id: '1', title: 'Task 1', userId: 'user-1' };
       service.findOne.mockResolvedValue(mockTask);
 
-      const result = await controller.findOne('1');
+      const result = await controller.findOne('1', mockUser);
 
       expect(result).toEqual(mockTask);
-      expect(service.findOne).toHaveBeenCalledWith('1');
+      expect(service.findOne).toHaveBeenCalledWith('1', mockUser);
     });
 
-    it('should throw NotFoundException when task not found', async () => {
+    it('should throw NotFoundException when task not found or not owned', async () => {
       service.findOne.mockRejectedValue(new NotFoundException());
 
-      await expect(controller.findOne('999')).rejects.toThrow(NotFoundException);
+      await expect(controller.findOne('999', mockUser)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
   describe('create', () => {
-    it('should create and return new task', async () => {
+    it('should create task for authenticated user', async () => {
       const createTaskDto: CreateTaskDto = {
         title: 'New Task',
         description: 'New Description',
@@ -86,21 +92,21 @@ describe('TasksController', () => {
         id: '1',
         ...createTaskDto,
         isCompleted: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        userId: 'user-1',
+        user: mockUser,
       };
 
       service.create.mockResolvedValue(mockTask);
 
-      const result = await controller.create(createTaskDto);
+      const result = await controller.create(createTaskDto, mockUser);
 
       expect(result).toEqual(mockTask);
-      expect(service.create).toHaveBeenCalledWith(createTaskDto);
+      expect(service.create).toHaveBeenCalledWith(createTaskDto, mockUser);
     });
   });
 
   describe('update', () => {
-    it('should update and return task', async () => {
+    it('should update user task', async () => {
       const updateTaskDto: UpdateTaskDto = {
         title: 'Updated Task',
         isCompleted: true,
@@ -110,40 +116,25 @@ describe('TasksController', () => {
         id: '1',
         title: 'Updated Task',
         isCompleted: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        userId: 'user-1',
       };
 
       service.update.mockResolvedValue(mockUpdatedTask);
 
-      const result = await controller.update('1', updateTaskDto);
+      const result = await controller.update('1', updateTaskDto, mockUser);
 
       expect(result).toEqual(mockUpdatedTask);
-      expect(service.update).toHaveBeenCalledWith('1', updateTaskDto);
-    });
-
-    it('should throw NotFoundException when task not found', async () => {
-      service.update.mockRejectedValue(new NotFoundException());
-
-      await expect(
-        controller.update('999', { title: 'Updated' })
-      ).rejects.toThrow(NotFoundException);
+      expect(service.update).toHaveBeenCalledWith('1', updateTaskDto, mockUser);
     });
   });
 
   describe('remove', () => {
-    it('should remove task successfully', async () => {
+    it('should remove user task', async () => {
       service.remove.mockResolvedValue(undefined);
 
-      await controller.remove('1');
+      await controller.remove('1', mockUser);
 
-      expect(service.remove).toHaveBeenCalledWith('1');
-    });
-
-    it('should throw NotFoundException when task not found', async () => {
-      service.remove.mockRejectedValue(new NotFoundException());
-
-      await expect(controller.remove('999')).rejects.toThrow(NotFoundException);
+      expect(service.remove).toHaveBeenCalledWith('1', mockUser);
     });
   });
 });

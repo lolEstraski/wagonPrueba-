@@ -3,6 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TasksModule } from './tasks/tasks.module';
 import { Task } from './tasks/entities/task.entity';
+import { User } from './tasks/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users.module';
 
 @Module({
   imports: [
@@ -18,12 +21,14 @@ import { Task } from './tasks/entities/task.entity';
         username: configService.get('DB_USERNAME', 'postgres'),
         password: configService.get('DB_PASSWORD', 'password'),
         database: configService.get('DB_NAME', 'task_manager'),
-        entities: [Task],
+        entities: [Task, User], // 🔥 Agregar User entity
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',
       }),
       inject: [ConfigService],
     }),
+    AuthModule, 
+    UsersModule, 
     TasksModule,
   ],
 })
