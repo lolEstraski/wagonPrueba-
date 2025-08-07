@@ -3,6 +3,8 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
+import { validate } from 'class-validator';
+import { CreateTaskDto } from './../src/dto/create_task.dto';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -26,4 +28,7 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Hello World!');
   });
+
+
+    
 });
