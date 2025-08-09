@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TasksModule } from './tasks.module';
-import { Task } from '../entities/task.entity';
-import { User } from '../entities/user.entity';
-import { AuthModule } from '../../auth/auth.module';
-import { UsersModule } from '../userService/users.module';
+import { Task } from './tasks/entities/task.entity';
+import { User } from './tasks/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users.module';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { UsersModule } from '../userService/users.module';
         username: configService.get('DB_USERNAME', 'postgres'),
         password: configService.get('DB_PASSWORD', 'password'),
         database: configService.get('DB_NAME', 'task_manager'),
-        entities: [Task, User], // 🔥 Agregar User entity
+        entities: [Task, User], 
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',
       }),

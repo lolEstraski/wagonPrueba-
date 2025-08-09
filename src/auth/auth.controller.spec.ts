@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { RegisterDto } from '../dto/register.dto';
-import { LoginDto } from '../dto/login.dto';
+import { RegisterDto } from '../tasks/dto/register.dto';
+import { LoginDto } from '../tasks/dto/login.dto';
 
 const mockAuthService = () => ({
   register: jest.fn(),

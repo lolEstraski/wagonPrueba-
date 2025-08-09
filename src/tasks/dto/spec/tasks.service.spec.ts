@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
-import { TasksService } from './tasks.service';
-import { Task } from '../entities/task.entity';
+import { TasksService } from '../../service/tasks.service';
+import { Task } from '../../entities/task.entity';
 import { CreateTaskDto } from '../../dto/create_task.dto';
 import { UpdateTaskDto } from '../../dto/update_task.dto';
-import { User } from '../entities/user.entity';
+import { User } from '../../entities/user.entity';
 
 const mockRepository = () => ({
   find: jest.fn(),

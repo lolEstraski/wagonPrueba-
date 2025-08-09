@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { RegisterDto } from '../../dto/register.dto';
+import { RegisterDto } from '../register.dto';
 
 describe('RegisterDto', () => {
   it('should pass validation with valid data', async () => {

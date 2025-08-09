@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { UpdateTaskDto } from '../../dto/update_task.dto';
+import { UpdateTaskDto } from '../update_task.dto';
 
 describe('UpdateTaskDto', () => {
   it('should pass validation with valid partial data', async () => {
@@ -26,5 +26,4 @@ describe('UpdateTaskDto', () => {
     expect(errors).toHaveLength(0);
   });
 
-  
 });

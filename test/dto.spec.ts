@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { CreateTaskDto } from './../src/dto/create_task.dto';
+import { CreateTaskDto } from '../src/tasks/dto/create_task.dto';
 
 describe('CreateTaskDto', () => {
   it('should pass validation with valid data', async () => {

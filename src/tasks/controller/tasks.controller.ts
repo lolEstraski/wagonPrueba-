@@ -11,9 +11,9 @@ import {
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
-import { TasksService } from '../taskService/tasks.service';
-import { CreateTaskDto } from '../../dto/create_task.dto';
-import { UpdateTaskDto } from '../../dto/update_task.dto';
+import { TasksService } from '../service/tasks.service';
+import { CreateTaskDto } from '../dto/create_task.dto';
+import { UpdateTaskDto } from '../dto/update_task.dto';
 import { Task } from '../entities/task.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { GetUser } from '../../auth/decorators/get-user.decorator';

@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
-import { TasksController } from '../task/tasks.controller';
-import { TasksService } from '../taskService/tasks.service';
-import { Task } from '../entities/task.entity';  
-import { CreateTaskDto } from '../../dto/create_task.dto';
-import { UpdateTaskDto } from '../../dto/update_task.dto';
-import { User } from '../entities/user.entity';
+import { TasksController } from '../../controller/tasks.controller';
+import { TasksService } from '../../service/tasks.service';
+import { Task } from '../../entities/task.entity';  
+import { CreateTaskDto } from '../create_task.dto';
+import { UpdateTaskDto } from '../update_task.dto';
+import { User } from '../../entities/user.entity';
 
 const mockTasksService = () => ({
   findAll: jest.fn(),
