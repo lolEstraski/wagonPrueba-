@@ -115,16 +115,6 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 👥 Carlos Andres Ortegon Tique
 
-- **Tu Nombre** - [GitHub](https://github.com/tu-usuario)
+- **Tu Nombre** - [GitHub](https://github.com/lolEstraski)
 
-## 🆘 Soporte
 
-Si tienes problemas o preguntas:
-
-1. Revisa la [documentación](#-documentación-de-la-api)
-2. Busca en [Issues](https://github.com/tu-usuario/task-manager-api/issues)
-3. Crea un nuevo Issue si no encuentras solución
-
----
-
-⭐ ¡Dale una estrella si te gusta el proyecto!
