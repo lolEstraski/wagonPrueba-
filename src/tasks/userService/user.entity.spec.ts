@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { User } from './tasks/entities/user.entity';
+import { User } from '../entities/user.entity';
 
 describe('User Entity', () => {
   it('should create a user instance', () => {

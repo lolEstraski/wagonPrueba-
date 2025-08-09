@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from './users.service';
-import { User } from './tasks/entities/user.entity';
+import { User } from '../entities/user.entity';
 
 const mockRepository = () => ({
   create: jest.fn(),
