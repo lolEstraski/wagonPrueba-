@@ -1,13 +1,13 @@
 # Task Manager API
 
-Una API REST completa para gestión de tareas construida con NestJS, TypeORM y PostgreSQL.
+Una API REST completa para gestión de tareas construida con NestJS, TypeORM y PostgreSQL, la cual consta como un block  en el cual puedes listar tus tareas , y su  respectivo  crud en la cual  podras  ver tus tareas pendentes , tareas completadas, tambien con un lpgin y un registrar  usuarios 
 ## 🛠️ Stack Tecnológico
 - **Framework**: NestJS
 - **Base de datos**: PostgreSQL
 - **ORM**: TypeORM
 - **Autenticación**: JWT
 - **Validación**: class-validator
-- **Containerización**: Docker & Docker Compose
+- **Containerización**: Docker 
 ## 🔧 Instalación
 ### 1. Clonar el repositorio
 ```bash
@@ -19,24 +19,48 @@ git clone https://github.com/lolEstraski/wagonPrueba-.git
 npm install
 ```
 ### 3. Configurar variables de entorno
-Crear un archivo `.env` en la raíz del proyecto:
-```env
+Crear un archivo `appmodulo,ts` para correr el  backend  desplegado
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('DB_HOST', 'dpg-d2bg1ijuibrs73fiqn90-a'), ojo si quiere correr en local "localhost"
+        port: configService.get<number>('DB_PORT', 5432),
+        username: configService.get('DB_USERNAME', 'tasks'),
+        password: configService.get('DB_PASSWORD', 'h6kKePc3hXr4mRoe21AI8Gb82X5h6X4s'),
+        database: configService.get('DB_NAME', 'task_manager_osby'), "task_manager"
+        entities: [Task, User],
+        synchronize: configService.get('NODE_ENV') !== 'production',
+        logging: configService.get('NODE_ENV') === 'development',
+      }),
+      inject: [ConfigService],
+    }),
+    AuthModule,
+    UsersModule,
+    TasksModule,
+  ],
+})
+export class AppModule { }
+### configurar el .env  de ser necesario si no abstenerse ```env 
+por defecto  ya deberia correr  de ser necesario  si quiere correr en local  
 # Database
 DB_HOST=localhost
 DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=password
+DB_USERNAME=tasks
+DB_PASSWORD=h6kKePc3hXr4mRoe21AI8Gb82X5h6X4s
 DB_DATABASE=task_manager
-
 # JWT
 JWT_SECRET=tu-jwt-secret-muy-seguro
 JWT_EXPIRES_IN=7d
 
 # App
-PORT=3000
-NODE_ENV=development
+PORT=3001 o 3000
 ```
-
 ### 4. Levantar la base de datos con Docker
 ```bash
 docker-compose up -d
@@ -71,12 +95,7 @@ npm run test:cov
 ## 📝 Scripts Disponibles
 
 ```bash
-npm run start          # Iniciar en modo producción
 npm run start:dev      # Iniciar en modo desarrollo
-npm run start:debug    # Iniciar en modo debug
-npm run build          # Construir para producción
-npm run lint           # Ejecutar linter
-npm run format         # Formatear código
 npm run test           # Ejecutar tests
 ```
 
@@ -96,19 +115,7 @@ npm run typeorm:revert
 npm run typeorm:show
 ```
 
-## 🌍 Variables de Entorno
 
-| Variable | Descripción | Valor por defecto |
-|----------|-------------|-------------------|
-| `PORT` | Puerto del servidor | `3000` |
-| `NODE_ENV` | Ambiente de ejecución | `development` |
-| `DB_HOST` | Host de la base de datos | `localhost` |
-| `DB_PORT` | Puerto de la base de datos | `5432` |
-| `DB_USERNAME` | Usuario de la base de datos | `postgres` |
-| `DB_PASSWORD` | Contraseña de la base de datos | `password` |
-| `DB_DATABASE` | Nombre de la base de datos | `task_manager` |
-| `JWT_SECRET` | Secreto para JWT | - |
-| `JWT_EXPIRES_IN` | Tiempo de expiración del JWT | `7d` |
 
 ## 📄 Licencia
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
